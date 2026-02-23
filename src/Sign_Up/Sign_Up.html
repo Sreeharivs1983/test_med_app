@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>StayHealthy - Sign Up</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Sign_Up.css">
+</head>
+<body>
+
+<div class="signup-wrapper">
+
+    <div class="signup-card">
+
+        <h2>Create Account</h2>
+
+        <p class="login-text">
+            Already have an account?
+            <a href="../Login/Login.html">Login</a>
+        </p>
+
+        <form>
+
+            <div class="form-group">
+                <label for="role">Role</label>
+                <select id="role" required>
+                    <option value="">Select Role</option>
+                    <option value="patient">Patient</option>
+                    <option value="doctor">Doctor</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" required placeholder="Enter your full name">
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" required placeholder="Enter your phone number">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" required placeholder="Enter your email">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required placeholder="Enter your password">
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn-primary">Sign Up</button>
+                <button type="reset" class="btn-secondary">Reset</button>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>
