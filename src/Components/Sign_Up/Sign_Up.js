@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { API_URL } from "../../config";
 import "./Sign_Up.css";
 
-const Sign_Up = () => {
+const SignUp = () => {
+
   const [role, setRole] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -10,10 +12,12 @@ const Sign_Up = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const register = async (e) => {
     e.preventDefault();
 
-    // Basic validation
+    // Frontend validation
     if (!role || !name || !phone || !email || !password) {
       setError("All fields are required.");
       return;
@@ -24,8 +28,42 @@ const Sign_Up = () => {
       return;
     }
 
-    setError("");
-    alert("Validation Passed (Backend will be connected later)");
+    try {
+      const response = await fetch(`${API_URL}/api/auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+          phone,
+        }),
+      });
+
+      const json = await response.json();
+
+      if (json.authtoken) {
+        sessionStorage.setItem("auth-token", json.authtoken);
+        sessionStorage.setItem("name", name);
+        sessionStorage.setItem("email", email);
+        sessionStorage.setItem("phone", phone);
+      
+        navigate("/");
+        window.location.reload();
+      }else {
+        if (json.errors && Array.isArray(json.errors)) {
+          setError(json.errors.map(err => err.msg).join(", "));
+        } else if (typeof json.error === "string") {
+          setError(json.error);
+        } else {
+          setError("Registration failed.");
+        }
+      }
+    } catch (err) {
+      setError("Server connection failed.");
+    }
   };
 
   return (
@@ -38,7 +76,8 @@ const Sign_Up = () => {
           <Link to="/login">Login</Link>
         </p>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={register}>
+
           {error && <p style={{ color: "red" }}>{error}</p>}
 
           <div className="form-group">
@@ -106,10 +145,11 @@ const Sign_Up = () => {
               Reset
             </button>
           </div>
+
         </form>
       </div>
     </div>
   );
 };
 
-export default Sign_Up;
+export default SignUp;

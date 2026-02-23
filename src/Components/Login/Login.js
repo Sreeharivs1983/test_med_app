@@ -1,30 +1,64 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { API_URL } from "../../config";
 import "./Login.css";
 
 const Login = () => {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  // If already logged in, redirect to home
+  useEffect(() => {
+    if (sessionStorage.getItem("auth-token")) {
+      navigate("/");
+    }
+  }, [navigate]);
+
+  const login = async (e) => {
     e.preventDefault();
 
-    // Validation
+    // Frontend validation
     if (!email || !password) {
-      setError("Email and Password are required.");
+      setError("All fields are required.");
       return;
     }
 
-    // Basic email format check
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(email)) {
-      setError("Please enter a valid email address.");
-      return;
-    }
+    try {
+      const res = await fetch(`${API_URL}/api/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
 
-    setError("");
-    alert("Login validation passed (Backend will be connected later)");
+      const json = await res.json();
+
+      if (json.authtoken) {
+        // Store token
+        sessionStorage.setItem("auth-token", json.authtoken);
+        sessionStorage.setItem("email", email);
+
+        navigate("/");
+        window.location.reload();
+      } else {
+        if (json.errors && Array.isArray(json.errors)) {
+          setError(json.errors.map(err => err.msg).join(", "));
+        } else {
+          setError(json.error || "Login failed.");
+        }
+      }
+
+    } catch (err) {
+      setError("Server connection failed.");
+    }
   };
 
   return (
@@ -38,14 +72,14 @@ const Login = () => {
           <Link to="/signup">Sign Up Here</Link>
         </p>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={login}>
+
           {error && <p style={{ color: "red" }}>{error}</p>}
 
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label>Email</label>
             <input
               type="email"
-              id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
@@ -53,10 +87,9 @@ const Login = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label>Password</label>
             <input
               type="password"
-              id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
@@ -72,9 +105,6 @@ const Login = () => {
             </button>
           </div>
 
-          <p className="forgot-password">
-            Forgot Password?
-          </p>
         </form>
 
       </div>
