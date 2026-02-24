@@ -3,32 +3,66 @@ import "./ReportsLayout.css";
 
 const ReportsLayout = () => {
 
-  const username =
-    sessionStorage.getItem("name") ||
-    (sessionStorage.getItem("email") || "").split("@")[0];
-
-  const handleDownload = () => {
-    alert("Report downloaded successfully!");
-  };
+  const reports = [
+    {
+      id: 1,
+      doctorName: "Dr. John Doe",
+      speciality: "Cardiology"
+    },
+    {
+      id: 2,
+      doctorName: "Dr. Jane Smith",
+      speciality: "Dermatology"
+    }
+  ];
 
   return (
     <div className="reports-container">
-      <div className="report-card">
+      <h1 className="reports-title">Reports</h1>
 
-        <h2>Medical Report</h2>
+      <table className="reports-table">
+        <thead>
+          <tr>
+            <th>Serial Number</th>
+            <th>Doctor Name</th>
+            <th>Doctor Speciality</th>
+            <th>View Report</th>
+            <th>Download Report</th>
+          </tr>
+        </thead>
 
-        <p><strong>Patient Name:</strong> {username}</p>
-        <p><strong>Doctor:</strong> Dr. John Smith</p>
-        <p><strong>Speciality:</strong> General Physician</p>
-        <p><strong>Date:</strong> 24 Feb 2026</p>
-        <p><strong>Diagnosis:</strong> Mild Viral Fever</p>
-        <p><strong>Prescription:</strong> Paracetamol 500mg - Twice daily</p>
+        <tbody>
+          {reports.map((report) => (
+            <tr key={report.id}>
+              <td>{report.id}</td>
+              <td>{report.doctorName}</td>
+              <td>{report.speciality}</td>
 
-        <button onClick={handleDownload}>
-          Download Report
-        </button>
+              <td>
+                <a
+                  href="/patient_report.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="view-btn"
+                >
+                  View Report
+                </a>
+              </td>
 
-      </div>
+              <td>
+                <a
+                  href="/patient_report.pdf"
+                  download="patient_report.pdf"
+                  className="download-btn"
+                >
+                  Download Report
+                </a>
+              </td>
+
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
