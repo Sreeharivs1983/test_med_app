@@ -1,74 +1,72 @@
-import React, { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import './DoctorCard.css';
-import AppointmentForm from '../AppointmentForm/AppointmentForm';
+import React, { useState } from "react";
+import Popup from "reactjs-popup";
+import "reactjs-popup/dist/index.css";
+import AppointmentForm from "../AppointmentForm/AppointmentForm";
+import "./DoctorCard.css";
 
 const DoctorCard = ({ name, speciality, experience, ratings }) => {
 
-  const [showForm, setShowForm] = useState(false);
   const [appointments, setAppointments] = useState([]);
 
-  const handleBookingClick = () => {
-    if (appointments.length > 0) {
-      // Cancel booking
-      setAppointments([]);
-    } else {
-      setShowForm(true);
-    }
+  const handleFormSubmit = (appointmentData) => {
+    setAppointments([appointmentData]);
   };
 
-  const handleFormSubmit = (appointmentData) => {
-    const newAppointment = {
-      id: uuidv4(),
-      ...appointmentData,
-    };
-
-    setAppointments([newAppointment]);
-    setShowForm(false);
+  const handleCancel = () => {
+    setAppointments([]);
   };
 
   return (
     <div className="doctor-card">
 
+      <div className="doctor-card-left">
+        <div style={{ fontSize: "60px" }}>👨‍⚕️</div>
+      </div>
+
       <div className="doctor-card-details">
-        <div className="doctor-card-detail-name">{name}</div>
-        <div className="doctor-card-detail-speciality">{speciality}</div>
-        <div className="doctor-card-detail-experience">
-          {experience} years experience
-        </div>
-        <div className="doctor-card-detail-consultationfees">
-          Ratings: {ratings}
-        </div>
+        <h3>{name}</h3>
+        <p className="doctor-speciality">{speciality}</p>
+        <p>{experience} years experience</p>
+        <p>⭐ {ratings}</p>
       </div>
 
-      <div className="doctor-card-options-container">
-        <button
-          className={`book-appointment-btn ${
-            appointments.length > 0 ? 'cancel-appointment' : ''
-          }`}
-          onClick={handleBookingClick}
-        >
-          {appointments.length > 0 ? "Cancel Appointment" : "Book Appointment"}
-        </button>
+      <div className="doctor-card-options">
+
+        {appointments.length === 0 ? (
+          <Popup
+            trigger={
+              <button className="book-appointment-btn">
+                Book Appointment
+                <div className="no-fee">No Booking Fee</div>
+              </button>
+            }
+            modal
+          >
+            {(close) => (
+              <AppointmentForm
+                doctorName={name}
+                doctorSpeciality={speciality}
+                onSubmit={(data) => {
+                  handleFormSubmit(data);
+                  close();
+                }}
+              />
+            )}
+          </Popup>
+        ) : (
+          <div>
+            <p style={{ color: "green" }}>Appointment Booked!</p>
+            <button
+              className="book-appointment-btn"
+              onClick={handleCancel}
+              style={{ backgroundColor: "red" }}
+            >
+              Cancel Appointment
+            </button>
+          </div>
+        )}
+
       </div>
-
-      {showForm && (
-        <AppointmentForm
-          doctorName={name}
-          doctorSpeciality={speciality}
-          onSubmit={handleFormSubmit}
-        />
-      )}
-
-      {appointments.length > 0 && (
-        <div className="bookedInfo">
-          <p><strong>Appointment Booked!</strong></p>
-          <p>Name: {appointments[0].name}</p>
-          <p>Phone: {appointments[0].phoneNumber}</p>
-          <p>Date: {appointments[0].date}</p>
-          <p>Time: {appointments[0].time}</p>
-        </div>
-      )}
 
     </div>
   );
