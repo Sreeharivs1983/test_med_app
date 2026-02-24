@@ -7,6 +7,7 @@ import Sign_Up from "./Components/Sign_Up/Sign_Up";
 import Login from "./Components/Login/Login";
 import InstantConsultation from "./Components/InstantConsultation/InstantConsultation";
 import FindDoctorSearch from "./Components/FindDoctorSearch/FindDoctorSearch";
+import DoctorCard from "./Components/DoctorCard/DoctorCard";
 
 
 function App() {
@@ -24,6 +25,17 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/instant-consultation" element={<InstantConsultation />} />
           <Route path="/test-search" element={<FindDoctorSearch />} />
+          <Route
+  path="/test-doctor"
+  element={
+    <DoctorCard
+      name="Dr. John Smith"
+      speciality="Dentist"
+      experience={12}
+      ratings={4.8}
+    />
+  }
+/>
         </Routes>
 
       </BrowserRouter>

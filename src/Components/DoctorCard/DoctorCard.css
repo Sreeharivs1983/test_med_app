@@ -1,0 +1,29 @@
+.doctor-card-detail-name {
+    font-size: 20px;
+    font-weight: 600;
+  }
+  
+  .doctor-card-detail-speciality {
+    color: #007bff;
+    margin: 5px 0;
+  }
+  
+  .doctor-card-detail-experience {
+    color: #555;
+  }
+  
+  .doctor-card-detail-consultationfees {
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .cancel-appointment {
+    background-color: red;
+  }
+  
+  .bookedInfo {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #f0f8ff;
+    border-radius: 8px;
+  }
