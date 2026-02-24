@@ -9,7 +9,8 @@ import FindDoctorSearch from "./Components/FindDoctorSearch/FindDoctorSearch";
 import DoctorCard from "./Components/DoctorCard/DoctorCard";
 import BookingConsultation from "./Components/BookingConsultation";
 import Notification from "./Components/Notification/Notification";
-import ReviewForm from "./Components/ReviewForm/ReviewForm";  // ✅ Added
+import ReviewForm from "./Components/ReviewForm/ReviewForm";
+import ProfileCard from "./Components/ProfileCard/ProfileCard";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/instant-consultation" element={<InstantConsultation />} />
             <Route path="/test-search" element={<FindDoctorSearch />} />
             <Route path="/appointments" element={<BookingConsultation />} />
+            <Route path="/profile" element={<ProfileCard />} />
 
             {/* ✅ Reviews Route (IBM Integration Step) */}
             <Route

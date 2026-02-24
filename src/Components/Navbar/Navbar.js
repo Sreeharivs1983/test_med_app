@@ -29,7 +29,6 @@ const Navbar = () => {
           <Link to="/">Home</Link>
         </li>
 
-        {/* ✅ Always visible */}
         <li>
           <Link to="/appointments">Appointments</Link>
         </li>
@@ -44,16 +43,19 @@ const Navbar = () => {
             </li>
           </>
         ) : (
-          <>
-            <li>
-              <span>Welcome, {username}</span>
-            </li>
-            <li>
-              <button onClick={handleLogout} className="btn-primary">
+          <li className="dropdown">
+            <span className="dropbtn">
+              Welcome, {username} ▼
+            </span>
+
+            <div className="dropdown-content">
+              <Link to="/profile">Profile</Link>
+              <Link to="/reports">Your Reports</Link>
+              <button onClick={handleLogout}>
                 Logout
               </button>
-            </li>
-          </>
+            </div>
+          </li>
         )}
 
       </ul>
