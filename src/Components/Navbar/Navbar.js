@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 
 const Navbar = () => {
 
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
 
   const token = sessionStorage.getItem("auth-token");
   const email = sessionStorage.getItem("email");
@@ -24,7 +25,7 @@ const Navbar = () => {
       </div>
 
       <ul className="nav-links">
-        
+
         <li>
           <Link to="/">Home</Link>
         </li>
@@ -44,17 +45,20 @@ const Navbar = () => {
           </>
         ) : (
           <li className="dropdown">
-            <span className="dropbtn">
+            <span
+              className="dropbtn"
+              onClick={() => setIsOpen(!isOpen)}
+            >
               Welcome, {username} ▼
             </span>
 
-            <div className="dropdown-content">
-              <Link to="/profile">Profile</Link>
-              <Link to="/reports">Your Reports</Link>
-              <button onClick={handleLogout}>
-                Logout
-              </button>
-            </div>
+            {isOpen && (
+              <div className="dropdown-content">
+                <Link to="/profile" onClick={() => setIsOpen(false)}>Profile</Link>
+                <Link to="/reports" onClick={() => setIsOpen(false)}>Your Reports</Link>
+                <button onClick={handleLogout}>Logout</button>
+              </div>
+            )}
           </li>
         )}
 
