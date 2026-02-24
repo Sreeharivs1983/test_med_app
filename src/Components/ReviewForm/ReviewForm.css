@@ -1,0 +1,39 @@
+.review-container {
+    width: 800px;
+    margin: 40px auto;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .review-form {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .review-form input,
+  .review-form textarea {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 8px;
+  }
+  
+  .rating .star {
+    font-size: 25px;
+    cursor: pointer;
+    color: gray;
+  }
+  
+  .rating .active {
+    color: gold;
+  }
